@@ -12,13 +12,13 @@
 // Function prototypes
 int initSDL2();
 void initChip8();
-int loadRom();
-void drawGfx();
+int loadRom(const char *rom);
+void drawGfx(SDL_Renderer *renderer);
 void inputCycle(SDL_Event event);
 void updateInput();
-void handleInterrupts();
+void handleInterrupts(int *SPEED, int *interruptType);
 void updateTimers();
-void emulateCycle();
+void emulateCycle(int *SPEED, int *interruptType);
 void initAudio();
 void soundBeep();
 
