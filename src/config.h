@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <SDL2/SDL.h>
+#include <stdbool.h>
 #include "colorp.h"
 
 #define LOW_RES_WIDTH 64
@@ -31,7 +32,6 @@ struct Chip8 {
     bool highRes;
     bool legacyMode;
     bool xoChipMode;
-    unsigned char fontSet[80];
     bool waitingForKey;
     bool keyReleased;
     double IPC;
