@@ -1,4 +1,5 @@
 # Chip-8 Emulator
+![GitHub License](https://img.shields.io/github/license/SnLynen/chip8)
 
 This is a **Chip-8 emulator** built for educational purposes. The goal of this project is to gain a deeper understanding of low-level system architecture, instruction handling, and graphics rendering. Chip-8 is a simple, interpreted programming language used to run games on early computing systems.
 
