@@ -611,26 +611,18 @@ void emulateCycle(int *SPEED, int *interruptType) {
             chip8.V[0xF] = 0; // Reset VF
 
             for (int yline = 0; yline < height; yline++) {
-                // Clip vertical, but continue drawing
-                if ((y + yline) >= displayHeight) {
-                    continue; // Skip drawing this line, but continue with the next one
-                }
-
                 uint8_t pixel = chip8.memory[chip8.I + yline];
 
                 for (int xline = 0; xline < 8; xline++) {
-                    // Clip horizontal, but continue drawing
-                    if ((x + xline) >= width) {
-                        continue; // Skip drawing this pixel, but continue with the next one
-                    }
-
-                    // Draw only if the pixel bit is set
                     if ((pixel & (0x80 >> xline)) != 0) {
-                        int index = (x + xline) + ((y + yline) * width);
-                        if (chip8.gfx[index] == 1) {
-                            chip8.V[0xF] = 1; // Set VF if any pixels are flipped
+                        int xPos = (x + xline) % width;
+                        int yPos = (y + yline) % displayHeight;
+
+                        // Check for collision
+                        if (chip8.gfx[yPos * width + xPos] == 1) {
+                            chip8.V[0xF] = 1;
                         }
-                        chip8.gfx[index] ^= 1;
+                        chip8.gfx[yPos * width + xPos] ^= 1;
                     }
                 }
             }
@@ -774,20 +766,12 @@ void drawGfx(SDL_Renderer *renderer) {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             if (chip8.gfx[y * width + x] == 1) {
-                int drawX = x;
-                int drawY = y;
+                int drawX = (x * pixelSize) % (width * pixelSize);
+                int drawY = (y * pixelSize) % (height * pixelSize);
 
-                // Handle wrapping
-                if (!chip8.compatMode) {
-                    drawX = x % width;
-                    drawY = y % height;
-                }
-
-                // Clip pixels that are out of bounds
-                if (drawX >= 0 && drawX < width && drawY >= 0 && drawY < height) {
-                    SDL_Rect pixel = { drawX * pixelSize, drawY * pixelSize, pixelSize, pixelSize };
-                    SDL_RenderFillRect(renderer, &pixel);
-                }
+                // Draw pixel
+                SDL_Rect pixelRect = { drawX, drawY, pixelSize, pixelSize };
+                SDL_RenderFillRect(renderer, &pixelRect);
             }
         }
     }
