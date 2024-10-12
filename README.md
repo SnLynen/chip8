@@ -10,7 +10,7 @@ This is a **Chip-8 emulator** built for educational purposes. The goal of this p
 - Support for loading and running Chip-8 ROMs.
 - Basic sound output (beeping on specific instructions).
 
-  ![alt text](https://github.com/SnLynen/chip8/src/blob/main/preview.jpg?raw=true)
+  ![preview](https://github.com/user-attachments/assets/bc7a6f60-227b-4691-86b6-ac14fd1907f7)
 
 ## Usage
 
