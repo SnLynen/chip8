@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
     // Check if theme was provided
     if (argc >= 3) {
         currentTheme = atoi(argv[2]);
-        if(currentTheme < 0 || currentTheme >= sizeof(themes) / sizeof(struct Theme)) {
+        if (currentTheme < 0 || currentTheme >= (int)(sizeof(themes) / sizeof(struct Theme))) {
             printf("Invalid theme. Using default theme.\n");
             currentTheme = 0;
         }
@@ -142,7 +142,7 @@ void initChip8() {
     memset(chip8.memory, 0, 4096);
     memset(chip8.V, 0, 16);
     memset(chip8.gfx, 0, HIGH_RES_WIDTH * HIGH_RES_HEIGHT);
-    memset(chip8.stack, 0, 16);
+    memset(chip8.stack, 0, 16 * sizeof(uint16_t)); // Assuming stack is of type uint16_t
     chip8.waitingForKey = false;
     chip8.compatMode = false;
     chip8.highRes = false;
@@ -202,7 +202,7 @@ int loadRom(const char *rom){
 
     // Copy the file into the buffer
     const size_t result = fread(buffer, 1, size, file);
-    if(result != size) {
+    if ((size_t)result != (size_t)size) {
         printf("Reading error.\n");
         return -1;
     };
